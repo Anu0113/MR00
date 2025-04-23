@@ -3,6 +3,7 @@ import pickle
 import pandas as pd
 import requests
 import time
+import gzip  # Added gzip import for compressed file handling
 
 def set_bg_image(image_url):
     st.markdown(
@@ -74,7 +75,10 @@ set_bg_image("https://www.itl.cat/pngfile/big/46-465731_streaming-movies.jpg")
 # Load movie data
 movie_list_dict = pickle.load(open('movie_list_dict.pkl', 'rb'))
 movie_list = pd.DataFrame(movie_list_dict)
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+
+# Load similarity matrix from the compressed file using gzip
+with gzip.open("similarity_compressed.pkl.gz", "rb") as f:  # Loading compressed similarity matrix
+    similarity = pickle.load(f)
 
 def fetch_poster(movie_id):
     try:
